@@ -7,6 +7,7 @@ import 'package:im_api_example/im/groupSelector.dart';
 import 'package:im_api_example/utils/sdkResponse.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tencent_im_sdk_plugin/enum/message_priority_enum.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_message.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_value_callback.dart';
 import 'package:tencent_im_sdk_plugin/tencent_im_sdk_plugin.dart';
@@ -21,7 +22,7 @@ class SendVideoMessageState extends State<SendVideoMessage> {
   Map<String, dynamic>? resData;
   List<String> receiver = List.empty(growable: true);
   List<String> groupID = List.empty(growable: true);
-  int priority = 0;
+  MessagePriorityEnum priority = MessagePriorityEnum.V2TIM_PRIORITY_DEFAULT;
   bool onlineUserOnly = false;
   bool isExcludedFromUnreadCount = false;
   File? video;
@@ -29,11 +30,10 @@ class SendVideoMessageState extends State<SendVideoMessage> {
   String snapshotPath = '';
   int duration = 0;
   final picker = ImagePicker();
+
   sendVideoMessage() async {
     print("${video!.path} $type $duration $snapshotPath");
-    V2TimValueCallback<V2TimMessage> res = await TencentImSDKPlugin.v2TIMManager
-        .getMessageManager()
-        .sendVideoMessage(
+    V2TimValueCallback<V2TimMessage> res = await TencentImSDKPlugin.v2TIMManager.getMessageManager().sendVideoMessage(
           videoFilePath: video!.path,
           type: type,
           snapshotPath: snapshotPath,
@@ -56,8 +56,8 @@ class SendVideoMessageState extends State<SendVideoMessage> {
       video: file.path,
       thumbnailPath: tempPath,
       imageFormat: ImageFormat.JPEG,
-      maxWidth:
-          128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      maxWidth: 128,
+      // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
       quality: 25,
     );
     setState(() {
@@ -111,8 +111,7 @@ class SendVideoMessageState extends State<SendVideoMessage> {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(left: 10),
-                  child:
-                      Text(receiver.length > 0 ? receiver.toString() : "未选择"),
+                  child: Text(receiver.length > 0 ? receiver.toString() : "未选择"),
                 ),
               )
             ],
@@ -159,7 +158,7 @@ class SendVideoMessageState extends State<SendVideoMessage> {
                             title: const Text('0'),
                             onPressed: () {
                               setState(() {
-                                priority = 0;
+                                priority = MessagePriorityEnum.V2TIM_PRIORITY_DEFAULT;
                               });
                               Navigator.pop(context);
                             },
@@ -168,7 +167,7 @@ class SendVideoMessageState extends State<SendVideoMessage> {
                             title: const Text('1'),
                             onPressed: () {
                               setState(() {
-                                priority = 1;
+                                priority = MessagePriorityEnum.V2TIM_PRIORITY_HIGH;
                               });
                               Navigator.pop(context);
                             },
@@ -177,7 +176,7 @@ class SendVideoMessageState extends State<SendVideoMessage> {
                             title: const Text('2'),
                             onPressed: () {
                               setState(() {
-                                priority = 2;
+                                priority = MessagePriorityEnum.V2TIM_PRIORITY_NORMAL;
                               });
                               Navigator.pop(context);
                             },
@@ -186,7 +185,7 @@ class SendVideoMessageState extends State<SendVideoMessage> {
                             title: const Text('3'),
                             onPressed: () {
                               setState(() {
-                                priority = 3;
+                                priority = MessagePriorityEnum.V2TIM_PRIORITY_LOW;
                               });
                               Navigator.pop(context);
                             },

@@ -4,7 +4,7 @@ import 'package:im_api_example/utils/sdkResponse.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:tencent_im_sdk_plugin/enum/V2TimSDKListener.dart';
-import 'package:tencent_im_sdk_plugin/enum/log_level.dart';
+import 'package:tencent_im_sdk_plugin/enum/log_level_enum.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_value_callback.dart';
 import 'package:tencent_im_sdk_plugin/tencent_im_sdk_plugin.dart';
 
@@ -18,23 +18,16 @@ class InitSDKState extends State<InitSDK> {
 
   Map<String, dynamic>? resData;
   initIMSDK() async {
-    V2TimValueCallback<bool> res =
-        await TencentImSDKPlugin.v2TIMManager.initSDK(
+    V2TimValueCallback<bool> res = await TencentImSDKPlugin.v2TIMManager.initSDK(
       sdkAppID: int.parse(storage.getItem('sdkappid')),
-      loglevel: LogLevel.V2TIM_LOG_DEBUG,
+      loglevel: LogLevelEnum.V2TIM_LOG_DEBUG,
       listener: new V2TimSDKListener(
-        onConnectFailed:
-            Provider.of<Event>(context, listen: false).onConnectFailed,
-        onConnectSuccess:
-            Provider.of<Event>(context, listen: false).onConnectSuccess,
-        onConnecting:
-            Provider.of<Event>(context, listen: false).onConnectSuccess,
-        onKickedOffline:
-            Provider.of<Event>(context, listen: false).onKickedOffline,
-        onSelfInfoUpdated:
-            Provider.of<Event>(context, listen: false).onSelfInfoUpdated,
-        onUserSigExpired:
-            Provider.of<Event>(context, listen: false).onUserSigExpired,
+        onConnectFailed: Provider.of<Event>(context, listen: false).onConnectFailed,
+        onConnectSuccess: Provider.of<Event>(context, listen: false).onConnectSuccess,
+        onConnecting: Provider.of<Event>(context, listen: false).onConnectSuccess,
+        onKickedOffline: Provider.of<Event>(context, listen: false).onKickedOffline,
+        onSelfInfoUpdated: Provider.of<Event>(context, listen: false).onSelfInfoUpdated,
+        onUserSigExpired: Provider.of<Event>(context, listen: false).onUserSigExpired,
       ),
     );
     setState(() {
